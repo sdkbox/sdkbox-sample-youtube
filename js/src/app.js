@@ -31,22 +31,34 @@ var HelloWorldLayer = cc.Layer.extend({
     },
 
     createTestMenu:function() {
+        sdkbox.PluginYoutube.init();
+        sdkbox.PluginYoutube.setListener({
+            onPlayEnds: function() {
+                cc.log("Video finished playing");
+            }
+        });
+
         var menu = new cc.Menu();
 
-        var item1 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 1", "sans", 28), function() {
-            cc.log("Test Item 1");
-        });
-        menu.addChild(item1);
+        menu.addChild(new cc.MenuItemLabel(new cc.LabelTTF("play video", "sans", 28), function() {
+            cc.log("play video");
+            sdkbox.PluginYoutube.playVideo("sYmQQn_ZSys", 0, true, true);
+        }));
 
-        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 2", "sans", 28), function() {
-            cc.log("Test Item 2");
-        });
-        menu.addChild(item2);
+        menu.addChild(new cc.MenuItemLabel(new cc.LabelTTF("Play a youtube playlist", "sans", 28), function() {
+            cc.log("Play a youtube playlist");
+            sdkbox.PluginYoutube.playPlayList("PLF0D3A9748DC5E42D", 0, 0, true, true);
+        }));
 
-        var item3 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 3", "sans", 28), function() {
-            cc.log("Test Item 3");
-        });
-        menu.addChild(item3);
+        menu.addChild(new cc.MenuItemLabel(new cc.LabelTTF("Play a group of youtube videos", "sans", 28), function() {
+            cc.log("Play a group of youtube videos");
+            var videos = [
+                "AcaBI_I0Td0",
+                "0UjWqQPWmsY",
+                "24i8G5a5d5Q"
+            ];
+            sdkbox.PluginYoutube.playVideoList(videos, 0, 0, true, true);
+        }));
 
         var winsize = cc.winSize;
         menu.x = winsize.width / 2;

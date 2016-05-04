@@ -18,28 +18,31 @@ function MainScene:onCreate()
 end
 
 function MainScene:setupTestMenu()
+    sdkbox.PluginYoutube:init()
+    sdkbox.PluginYoutube:setListener(function(args)
+        dump(args)
+    end)
     local menu = cc.Menu:create()
 
-    local label1 = cc.Label:createWithSystemFont("Test Item 1", "sans", 28)
-    local item1 = cc.MenuItemLabel:create(label1)
-    item1:onClicked(function()
-        print("Test Item 1")
-    end)
-    menu:addChild(item1)
+    menu:addChild(cc.MenuItemLabel:create(cc.Label:createWithSystemFont("play video", "sans", 28)):onClicked(function()
+        print("play video")
+        sdkbox.PluginYoutube:playVideo("sYmQQn_ZSys", 0, true, true)
+    end))
 
-    local label2 = cc.Label:createWithSystemFont("Test Item 2", "sans", 28)
-    local item2 = cc.MenuItemLabel:create(label2)
-    item2:onClicked(function()
-        print("Test Item 2")
-    end)
-    menu:addChild(item2)
+    menu:addChild(cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Play a youtube playlist", "sans", 28)):onClicked(function()
+        print("Play a youtube playlist")
+        sdkbox.PluginYoutube:playPlayList("PLF0D3A9748DC5E42D", 0, 0, true, true)
+    end))
 
-    local label3 = cc.Label:createWithSystemFont("Test Item 3", "sans", 28)
-    local item3 = cc.MenuItemLabel:create(label3)
-    item3:onClicked(function()
-        print("Test Item 3")
-    end)
-    menu:addChild(item3)
+    menu:addChild(cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Play a group of youtube videos", "sans", 28)):onClicked(function()
+        print("Play a group of youtube videos")
+        local videos = {
+            "AcaBI_I0Td0",
+            "0UjWqQPWmsY",
+            "24i8G5a5d5Q"
+        }
+        sdkbox.PluginYoutube:playVideoList(videos, 0, 0, true, true)
+    end))
 
     menu:alignItemsVerticallyWithPadding(24)
     self:addChild(menu)
