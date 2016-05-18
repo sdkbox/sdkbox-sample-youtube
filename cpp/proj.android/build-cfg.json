@@ -8,6 +8,10 @@
         {
             "from": "../Resources",
             "to": ""
+        },
+        {
+            "from": "plugin_youtube_res_project/Assets",
+            "to": "Assets"
         }
     ]
 }

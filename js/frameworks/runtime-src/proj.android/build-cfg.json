@@ -16,6 +16,10 @@
         {
             "from": "../../../main.js",
             "to": ""
+        },
+        {
+            "from": "plugin_youtube_res_project/Assets",
+            "to": "Assets"
         }
     ],
     "must_copy_resources": [
