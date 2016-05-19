@@ -42,3 +42,4 @@ js/frameworks/runtime-src/proj.android/libs/youtube_lib/bin/
 js/frameworks/runtime-src/proj.android/libs/youtube_lib/gen/
 js/frameworks/runtime-src/proj.android/libs/youtube_lib/local.properties
 js/frameworks/runtime-src/proj.android/libs/youtube_lib/proguard-project.txt
+backup-*

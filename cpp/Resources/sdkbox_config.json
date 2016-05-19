@@ -3,10 +3,12 @@
         "Youtube": {
             "developer_key": "AIzaSyDMuDjrVSL3uj_QvlI3bbjKn5I4nNB1XZk"
         }
-    }, 
+    },
     "ios": {
         "Youtube": {
-            "developer_key": "AIzaSyDMuDjrVSL3uj_QvlI3bbjKn5I4nNB1XZk"
+            "developer_key": "AIzaSyDMuDjrVSL3uj_QvlI3bbjKn5I4nNB1XZk",
+            "show_close_button":true,
+            "close_button_text":"-X-"
         }
     }
 }

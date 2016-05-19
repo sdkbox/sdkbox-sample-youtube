@@ -35,3 +35,11 @@ Memo:
 | +-- lua
 | \-- js
 ~~~
+
+# config close button on iOS
+
+- "show_close_button":true
+- "close_button_text":"-X-"
+- "close_button_image":"res/button.png"
+
+"close_button_image" takes priority over "close_button_text"
