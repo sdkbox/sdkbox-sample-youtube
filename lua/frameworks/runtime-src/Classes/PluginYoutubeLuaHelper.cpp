@@ -1,8 +1,6 @@
 
 #include "PluginYoutubeLuaHelper.h"
 #include "PluginYoutube/PluginYoutube.h"
-#include "CCLuaEngine.h"
-#include "tolua_fix.h"
 #include "SDKBoxLuaHelper.h"
 
 class YoutubeListenerLua : public sdkbox::YoutubeListener {
