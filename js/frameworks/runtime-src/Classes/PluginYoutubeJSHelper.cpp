@@ -1,12 +1,22 @@
 
 #include "PluginYoutubeJSHelper.h"
-#include "cocos2d_specifics.hpp"
 #include "SDKBoxJSHelper.h"
 #include "PluginYoutube/PluginYoutube.h"
 
 static JSContext* s_cx = nullptr;
-class YoutubeListenerJsHelper : public sdkbox::YoutubeListener
+class YoutubeListenerJsHelper : public sdkbox::YoutubeListener, public sdkbox::JSListenerBase
 {
+public:
+    YoutubeListenerJsHelper():sdkbox::JSListenerBase() {
+    }
+
+    virtual void onPlayEnds(bool played_ok)
+    {
+        std::string name("onPlayEnds");
+        jsval dataVal[1];
+        dataVal[0] = BOOLEAN_TO_JSVAL(played_ok);
+        invokeDelegate(name, dataVal, 1);
+    }
 
 private:
     void invokeDelegate(std::string& fName, jsval dataVal[], int argc) {
@@ -16,7 +26,7 @@ private:
         JSContext* cx = s_cx;
         const char* func_name = fName.c_str();
 
-        JS::RootedObject obj(cx, mJsDelegate);
+        JS::RootedObject obj(cx, getJSDelegate());
         JSAutoCompartment ac(cx, obj);
 
 #if MOZJS_MAJOR_VERSION >= 31
@@ -56,33 +66,6 @@ private:
 #endif
         }
     }
-
-private:
-    JSObject* mJsDelegate;
-
-public:
-    void setJSDelegate(JSObject* delegate)
-    {
-        mJsDelegate = delegate;
-    }
-
-    JSObject* getJSDelegate()
-    {
-        return mJsDelegate;
-    }
-
-    YoutubeListenerJsHelper() : mJsDelegate(0)
-    {
-    }
-
-    virtual void onPlayEnds(bool played_ok)
-    {
-        std::string name("onPlayEnds");
-        jsval dataVal[1];
-        dataVal[0] = BOOLEAN_TO_JSVAL(played_ok);
-        invokeDelegate(name, dataVal, 1);
-    }
-
 };
 
 
@@ -102,11 +85,10 @@ JSBool js_PluginYoutubeJS_PluginYoutube_setListener(JSContext *cx, unsigned argc
         {
             ok = false;
         }
-        JSObject *tmpObj = args.get(0).toObjectOrNull();
 
         JSB_PRECONDITION2(ok, cx, false, "js_PluginYoutubeJS_PluginYoutube_setListener : Error processing arguments");
         YoutubeListenerJsHelper* lis = new YoutubeListenerJsHelper();
-        lis->setJSDelegate(tmpObj);
+        lis->setJSDelegate(args.get(0));
         sdkbox::PluginYoutube::setListener(lis);
 
         args.rval().setUndefined();
