@@ -13,13 +13,13 @@ public:
     virtual void onPlayEnds(bool played_ok)
     {
         std::string name("onPlayEnds");
-        jsval dataVal[1];
-        dataVal[0] = BOOLEAN_TO_JSVAL(played_ok);
+        JS::Value dataVal[1];
+        dataVal[0] = JS::BooleanValue(played_ok);
         invokeDelegate(name, dataVal, 1);
     }
 
 private:
-    void invokeDelegate(std::string& fName, jsval dataVal[], int argc) {
+    void invokeDelegate(std::string& fName, JS::Value dataVal[], int argc) {
         if (!s_cx) {
             return;
         }
@@ -47,7 +47,7 @@ private:
             if(!JS_GetProperty(cx, obj, func_name, &func_handle)) {
                 return;
             }
-            if(func_handle == JSVAL_VOID) {
+            if(func_handle == JS::NullValue()) {
                 return;
             }
 
@@ -70,7 +70,7 @@ private:
 
 
 #if defined(MOZJS_MAJOR_VERSION)
-bool js_PluginYoutubeJS_PluginYoutube_setListener(JSContext *cx, uint32_t argc, jsval *vp)
+bool js_PluginYoutubeJS_PluginYoutube_setListener(JSContext *cx, uint32_t argc, JS::Value *vp)
 #elif defined(JS_VERSION)
 JSBool js_PluginYoutubeJS_PluginYoutube_setListener(JSContext *cx, unsigned argc, JS::Value *vp)
 #endif
@@ -88,13 +88,13 @@ JSBool js_PluginYoutubeJS_PluginYoutube_setListener(JSContext *cx, unsigned argc
 
         JSB_PRECONDITION2(ok, cx, false, "js_PluginYoutubeJS_PluginYoutube_setListener : Error processing arguments");
         YoutubeListenerJsHelper* lis = new YoutubeListenerJsHelper();
-        lis->setJSDelegate(args.get(0));
+        lis->setJSDelegate(cx, args.get(0));
         sdkbox::PluginYoutube::setListener(lis);
 
         args.rval().setUndefined();
         return true;
     }
-    JS_ReportError(cx, "js_PluginYoutubeJS_PluginYoutube_setListener : wrong number of arguments");
+    JS_ReportErrorUTF8(cx, "js_PluginYoutubeJS_PluginYoutube_setListener : wrong number of arguments");
     return false;
 }
 
@@ -126,7 +126,7 @@ void register_all_PluginYoutubeJS_helper(JSContext* cx, JSObject* obj) {
         subChar = sub.c_str();
 
         JS_GetProperty(cx, obj, subChar, &nsval);
-        if (nsval == JSVAL_VOID) {
+        if (nsval == JS::NullValue()) {
             pluginObj = JS_NewObject(cx, NULL, NULL, NULL);
             nsval = OBJECT_TO_JSVAL(pluginObj);
             JS_SetProperty(cx, obj, subChar, nsval);
